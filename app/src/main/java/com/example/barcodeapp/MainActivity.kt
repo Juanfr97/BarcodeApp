@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun scanCode(){
         val options = ScanOptions()
-        options.setPrompt("Escanee un código QR")
+        options.setPrompt("Escanee un código de barras")
         options.setBeepEnabled(true)
         options.setOrientationLocked(false)
         barcodeLauncher.launch(options)
