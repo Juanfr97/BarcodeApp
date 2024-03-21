@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.barcodeapp.adapters.ProductAdapter
 import com.example.barcodeapp.models.Product
 import com.google.zxing.integration.android.IntentIntegrator
+import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 class MainActivity : AppCompatActivity() {
     private lateinit var button : Button
@@ -29,7 +30,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun scanCode(){
-        IntentIntegrator(this).initiateScan()
+        val options = ScanOptions()
+        options.setPrompt("Escanee un código QR")
+        options.setBeepEnabled(true)
+        options.setOrientationLocked(false)
+        barcodeLauncher.launch(options)
     }
     private fun setUpRecyclerView(){
         productsRecyclerView = findViewById(R.id.rv_products)
@@ -37,27 +42,22 @@ class MainActivity : AppCompatActivity() {
         productsRecyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-        if (result != null) {
-            if (result.contents == null) {
-                Toast.makeText(this, "Cancelado", Toast.LENGTH_LONG).show()
-            } else {
-                val barcode = result.contents
-                val product = Product.products.find { it.barcode == barcode }
-                if(product != null){
-                    products.add(product)
-                    productsRecyclerView.adapter?.notifyDataSetChanged()
-                }
-                else{
-                    Toast.makeText(this, "Producto no encontrado", Toast.LENGTH_LONG).show()
-                }
-
-                Toast.makeText(this, "Codigo de barras: " + result.contents, Toast.LENGTH_LONG).show()
+    private val barcodeLauncher = registerForActivityResult(ScanContract()) { result ->
+        if (result.contents == null) {
+            // El usuario cerró la cámara sin escanear nada.
+            Toast.makeText(this, "Cancelado", Toast.LENGTH_LONG).show()
+        } else {
+            // El usuario escaneó algo y el contenido del código se encuentra en result.contents
+            val product = Product.products.find { it.barcode == result.contents }
+            if(product != null){
+                products.add(product)
+                productsRecyclerView.adapter?.notifyDataSetChanged()
+                Toast.makeText(this, "Escaneado: ${result.contents}", Toast.LENGTH_LONG).show()
             }
-        }
-        else {
-            super.onActivityResult(requestCode, resultCode, data)
+            else{
+                Toast.makeText(this, "Producto no encontrado", Toast.LENGTH_LONG).show()
+            }
+
         }
     }
 }
