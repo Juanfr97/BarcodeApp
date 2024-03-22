@@ -10,6 +10,8 @@ data class Product(val barcode : String, val name : String, val price : Double, 
             Product("7500478016587", "Churrumais", 40.0, "https://i5.walmartimages.com.mx/gr/images/product-images/img_large/00750047800255L.jpg?odnHeight=612&odnWidth=612&odnBg=FFFFFF"),
             Product("7500478016587", "Churrumais", 40.0, "https://i5.walmartimages.com.mx/gr/images/product-images/img_large/00750047800255L.jpg?odnHeight=612&odnWidth=612&odnBg=FFFFFF"),
 
-        )
+            Product("7500478016587", "Churrumais", 40.0, "https://i5.walmartimages.com.mx/gr/images/product-images/img_large/00750047800255L.jpg?odnHeight=612&odnWidth=612&odnBg=FFFFFF"),
+
+            )
     }
 }
