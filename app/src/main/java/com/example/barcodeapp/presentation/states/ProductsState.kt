@@ -1,7 +1,7 @@
 package com.example.barcodeapp.presentation.states
 
-import com.example.barcodeapp.domain.models.Producto
+import com.example.barcodeapp.domain.models.Product
 
 data class ProductsState (
-    val products : List<Producto> = emptyList()
+    val products : List<Product> = emptyList()
 )

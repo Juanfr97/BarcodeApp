@@ -2,8 +2,6 @@ package com.example.barcodeapp.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.barcodeapp.domain.models.Producto
-import com.example.barcodeapp.domain.repositories.ProductRepository
 import com.example.barcodeapp.domain.use_cases.GetProducts
 import com.example.barcodeapp.presentation.states.ProductsState
 import dagger.hilt.android.lifecycle.HiltViewModel
