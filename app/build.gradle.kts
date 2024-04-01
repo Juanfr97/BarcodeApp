@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -36,7 +38,7 @@ android {
 }
 
 dependencies {
-
+    val room_version = "2.6.1"
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
@@ -46,4 +48,16 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     implementation("com.squareup.picasso:picasso:2.8")
+
+    implementation("com.google.dagger:hilt-android:2.50")
+    kapt("com.google.dagger:hilt-android-compiler:2.50")
+
+    // ViewModel
+    implementation ("androidx.activity:activity-ktx:1.8.0")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
+
+    // Room
+    implementation ("androidx.room:room-runtime:$room_version")
+    annotationProcessor ("androidx.room:room-compiler:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
 }

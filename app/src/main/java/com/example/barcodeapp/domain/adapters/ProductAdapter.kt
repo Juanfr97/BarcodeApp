@@ -1,4 +1,4 @@
-package com.example.barcodeapp.adapters
+package com.example.barcodeapp.domain.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.barcodeapp.R
-import com.example.barcodeapp.models.Product
+import com.example.barcodeapp.domain.models.Product
 import com.squareup.picasso.Picasso
 
 class ProductAdapter(val products : List<Product>) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
