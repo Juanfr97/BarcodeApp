@@ -2,9 +2,11 @@ package com.example.barcodeapp.presentation.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.barcodeapp.R
@@ -25,10 +27,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         button = findViewById(R.id.btn_scan)
         val mainViewModel : MainActivityViewModel by viewModels()
-        Toast.makeText(this,mainViewModel.getString(),Toast.LENGTH_LONG).show()
+        val state = mainViewModel.state
         setUpRecyclerView()
         button.setOnClickListener {
             scanCode()
+        }
+
+        lifecycleScope.launchWhenStarted {
+            state.collect { state ->
+                val products = state.products
+                Log.i("MainActivity","Products: $products")
+            }
         }
     }
 
