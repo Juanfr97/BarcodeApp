@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 class GetProducts(
     private val repository: ProductRepository
 ) {
-    operator fun invoke(): Flow<List<Product>> {
+    suspend operator fun invoke(): List<Product> {
         return repository.getAllProducts()
     }
 }
