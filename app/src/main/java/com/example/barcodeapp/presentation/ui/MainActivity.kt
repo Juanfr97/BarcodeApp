@@ -1,20 +1,26 @@
-package com.example.barcodeapp
+package com.example.barcodeapp.presentation.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.barcodeapp.adapters.ProductAdapter
-import com.example.barcodeapp.models.Product
+import com.example.barcodeapp.R
+import com.example.barcodeapp.domain.adapters.ProductAdapter
+import com.example.barcodeapp.domain.models.Product
+import com.example.barcodeapp.presentation.viewmodels.MainViewModel
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var button : Button
     private lateinit var productsRecyclerView: RecyclerView
     private val products = mutableListOf<Product>()
+    private val mainViewModel : MainViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -23,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         button.setOnClickListener {
             scanCode()
         }
+        Toast.makeText(this,mainViewModel.getString(),Toast.LENGTH_LONG).show()
     }
 
     private fun setUpRecyclerView(){
