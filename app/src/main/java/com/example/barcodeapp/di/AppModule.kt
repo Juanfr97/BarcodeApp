@@ -31,36 +31,48 @@ object AppModule {
         return "Hola desde dagger Hilt"
     }
 
+    @Volatile
+    private var INSTANCE: BarcodeDb? = null
+
     @Provides
     @Singleton
     fun provideBarcodeDb(
-        @ApplicationContext context:Context
-    ):BarcodeDb{
+        @ApplicationContext context: Context
+    ): BarcodeDb {
+        return INSTANCE ?: synchronized(this) {
+            val instance = INSTANCE
+            if (instance != null) {
+                instance
+            } else {
+                val callback = object : RoomDatabase.Callback() {
+                    override fun onCreate(db: SupportSQLiteDatabase) {
+                        super.onCreate(db)
+                        CoroutineScope(Dispatchers.IO).launch {
+                            val db = INSTANCE ?: return@launch  // Early return if db is somehow null
+                            val productDao = db.productDao()
+                            populateDatabase(productDao)
+                        }
+                    }
 
-        val callback = object : RoomDatabase.Callback(){
-            override fun onCreate(db: SupportSQLiteDatabase) {
-                super.onCreate(db)
-                val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-                applicationScope.launch {
-                    val barcodeDb = provideBarcodeDb(context)
-                    val productDao = barcodeDb.productDao()
-                    populateDatabase(productDao)
+                    private suspend fun populateDatabase(productDao: ProductDao) {
+                        val products = Product.products // Assuming Product.products is already defined
+                        productDao.insertAll(products)
+                    }
                 }
-            }
 
-            suspend fun populateDatabase(productDao:ProductDao){
-                val products = Product.products
-                productDao.insertAll(products)
+                Room.databaseBuilder(
+                    context.applicationContext,
+                    BarcodeDb::class.java,
+                    "barcode_db"
+                ) // Should be avoided in production
+                    .addCallback(callback)
+                    .build().also {
+                        INSTANCE = it
+                    }
             }
         }
-
-
-        return Room.databaseBuilder(
-            context,
-            BarcodeDb::class.java,
-            "barcode_db"
-        ).addCallback(callback).build()
     }
+
 
     @Provides
     @Singleton

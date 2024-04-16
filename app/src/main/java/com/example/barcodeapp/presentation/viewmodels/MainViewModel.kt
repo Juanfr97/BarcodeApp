@@ -30,8 +30,9 @@ class MainViewModel @Inject constructor(
     private fun loadProducts(){
         viewModelScope.launch {
             try {
-                val products = getProducts()
-                _state.value = _state.value.copy(products = products)
+                getProducts().collect {
+                    _state.value = _state.value.copy(products = it)
+                }
             }
             catch(e:Exception){
                 Log.i("ERROR",e.toString())

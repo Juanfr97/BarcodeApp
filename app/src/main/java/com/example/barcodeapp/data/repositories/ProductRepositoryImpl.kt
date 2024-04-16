@@ -9,7 +9,7 @@ import javax.inject.Inject
 class ProductRepositoryImpl @Inject constructor(
     private val productDao : ProductDao
 ) : ProductRepository {
-    override suspend fun getAllProducts(): List<Product> {
+    override suspend fun getAllProducts(): Flow<List<Product>> {
         return productDao.getAllProducts()
     }
 }

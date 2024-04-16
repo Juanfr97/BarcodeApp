@@ -4,5 +4,5 @@ import com.example.barcodeapp.domain.models.Product
 import kotlinx.coroutines.flow.Flow
 
 interface ProductRepository {
-    suspend fun getAllProducts() : List<Product>
+    suspend fun getAllProducts() : Flow<List<Product>>
 }
